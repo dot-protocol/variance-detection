@@ -1,0 +1,48 @@
+// SEED for BIP-?? — "Ephemeral Single-Use Covenants" (ESU)
+// Working title: OP_ANNIHILATE (placeholder)
+// Author: The Harrier Room, 2026-04-22
+// Status: Draft-Sketch, not yet spec
+
+ABSTRACT:
+  Introduce a covenant opcode enabling a UTXO to commit to being
+  spent EXACTLY ONCE, with a cryptographic proof attached to the
+  spending transaction that the referenced output has been destroyed
+  at origin. Composes with CTV+CSFS (BIP-119 + BIP-348).
+
+MOTIVATION:
+  Current Bitcoin Script has no way to express single-use semantics
+  native to the UTXO. Double-spend is prevented by global consensus,
+  not by the unit itself. This BIP moves non-copyability closer to
+  the unit, enabling Bitcoin UTXOs to serve as DOT-compatible
+  packets: the unit carries (a) its own address (Taproot key),
+  (b) its own authorization (Tapscript), and (c) its own
+  single-use destruction rule (this BIP).
+
+TECHNICAL PSEUDOCODE:
+  script_pubkey =
+    OP_ANNIHILATE_COMMIT <dot_hash>   // commits to DOT wrapper
+    OP_CHECKTEMPLATEVERIFY <template> // (BIP-119)
+    OP_CHECKSIGFROMSTACK              // (BIP-348)
+
+  spend_witness =
+    <signature> <annihilation_proof> <dot_wrapper>
+
+PRIOR ART:
+  - Hal Finney's RPOW (2004) — reusable proofs of work,
+    single-use tokens; predates Bitcoin, was sidelined
+    not refuted.
+  - OP_CHECKTEMPLATEVERIFY (BIP-119, Jeremy Rubin)
+  - OP_CHECKSIGFROMSTACK (BIP-348)
+
+OPEN QUESTIONS:
+  - How does annihilation_proof compose with RBF?
+  - Can the covenant be soft-forked without breaking
+    existing UTXO assumptions?
+  - Interaction with Lightning HTLCs.
+
+NEXT STEP:
+  Full mathematical treatment + reference implementation.
+  Estimate: 2 weeks of focused work with Kin-1 at home,
+  followed by draft PR to bitcoin/bips for community review.
+
+// end seed
