@@ -1,88 +1,86 @@
-# Variance Detection: Cancer as Cooperative Defection
+# Variance Detection: is cancer a cooperative defector that gives itself away by variance?
 
-**The defector gives itself away not by what it does, but by how inconsistently it does it.**
+An open hypothesis, open code and three open preprints: **cancer cells, as defectors from the cellular cooperative,
+show higher temporal variance in gene expression than healthy cells, enough to detect them from stability alone.**
 
-## What This Is
+> **Status, 28 October 2026: the hypothesis is untested on real data.** An adversarial internal review on 16 July 2026
+> found the simulation results in version 1 of the papers circular: the synthetic generator *defines* defecting cells as
+> the higher-variance population, and the classification threshold was fitted on the same ground-truth labels with no
+> held-out data. The F1 = 1.000, AUC = 1.000 and ~1,800x separation below are therefore **not evidence** for the
+> hypothesis; they show only that the code runs. Synchronized cooperative systems (coupled oscillators, bursting
+> neurons) are counterexamples to a *universal* variance law. Version 2 of each paper states this correction. The
+> useful, known part: trust = 1/variance is inverse-variance weighting (the Kalman gain, Beta reputation), a known
+> estimator applied to cell behaviour, not a new law.
 
-Mathematical proof and open-source code for a single hypothesis:
+**What would actually test it** (pull requests welcome):
+1. a held-out threshold (train/test split, or cross-validation across donors);
+2. defectors defined independently of variance (tumour annotation, copy-number calls, clinical labels);
+3. at least one real single-cell RNA-seq dataset with matched normal tissue (TCGA, Human Cell Atlas, GEO, Tabula Sapiens);
+4. the claim scoped to the tissues and conditions tested.
 
-> Cancer cells (defectors from the cellular cooperative) have measurably higher gene expression variance than healthy cells (cooperators). This variance is large enough to detect cancer from stability alone — potentially earlier than any existing method.
+## Papers (Zenodo, CC BY 4.0)
 
-## Papers
-
-| Paper | DOI | Audience |
+| Paper | DOI (concept: always the latest version) | For |
 |---|---|---|
-| "Your Body Already Knows: The Easy Way to See Cancer" | [Zenodo DOI pending] | Everyone |
-| "Light Is All You Need" | [Zenodo DOI pending] | Everyone (deeper) |
-| "Variance as a Universal Defection Signal" | [Zenodo DOI pending] | Researchers |
+| Variance as a Universal Defection Signal: A Framework for Early Detection of Cooperative Failure in Biological Systems | [10.5281/zenodo.19005449](https://doi.org/10.5281/zenodo.19005449) (v2 with correction: [10.5281/zenodo.23731290](https://doi.org/10.5281/zenodo.23731290)) | researchers |
+| Your Body Already Knows: The Easy Way to See Cancer | [10.5281/zenodo.19004940](https://doi.org/10.5281/zenodo.19004940) | everyone |
+| Light Is All You Need: Six Shadows That Keep Eight Billion People in the Dark | [10.5281/zenodo.19005308](https://doi.org/10.5281/zenodo.19005308) | everyone, deeper |
 
-Author: Sohail Mohammed Siddique Batliwalla Merchant (Blaze)
-Affiliation: AXXIS Infrastructure | DOT Protocol
-Contact: sohail@blockend.com
+Author: Sohail Mohammad Siddique Batliwalla Merchant ("Blaze"), AXXIS / DOT Protocol, sohail@blockend.com.
 
-## Run It
+## Run it
 
-### Stage 1 + 2: Mathematical Proof (no external data needed)
+Simulation (stages 1 and 2, no data needed):
 
 ```bash
 pip install numpy scipy matplotlib scikit-learn
 python variance_detection_proof.py
 ```
 
-Results:
-- **Network simulation:** 2.4x separation, F1 = 1.000, AUC = 1.000
-- **Gene expression simulation:** 1,868x separation, F1 = 1.000
+It reports a 2.4x separation on a cooperative network and ~1,800x on simulated gene expression, with F1 = 1.000. Read
+the status note above: these numbers come from data built to separate.
 
-### Stage 3: Validate on Real Cancer Data
+Real data (stage 3, the test that matters):
 
 ```bash
 pip install scanpy anndata pandas numpy scipy scikit-learn
 python real_data_connector.py
 ```
 
-Connects to: TCGA (20,000+ tumors), Human Cell Atlas (50M+ cells), GEO, Tabula Sapiens.
-
-**The hypothesis lives or dies on your data. Run it. Tell us what you find.**
-
-## Results
-
-| Experiment | Separation | Cohen's d | F1 | p-value |
-|---|---|---|---|---|
-| Cooperative Network | 2.4x | 5.31 | 1.000 | < 10⁻¹⁶⁵ |
-| Gene Expression Sim | 1,853x | 2.91 | 1.000 | 0.00 |
-| Real Data | **YOU RUN THIS** | **?** | **?** | **?** |
-
-## The Core Idea
-
-Cancer is not an invader. It's a defector. Your immune system already knows how to kill it. Cancer survives because it hides, not because it's strong. Immunotherapy removes the disguise. The immune system does the rest.
-
-**If you have cancer: ask your oncologist about checkpoint inhibitors (Keytruda, Opdivo, Tecentriq). They work by helping your body SEE, not by poisoning it.**
+The connector loads AnnData from TCGA, Human Cell Atlas, GEO or Tabula Sapiens. Report results, positive or negative,
+with the issue template **Validation result** (`.github/ISSUE_TEMPLATE/validation_result.md`).
 
 ## Files
 
 | File | What |
 |---|---|
-| `variance_detection_proof.py` | Full simulation + visualization |
-| `real_data_connector.py` | Plug-and-play for real scRNA-seq data |
-| `arxiv/main.tex` | arXiv paper LaTeX source |
-| `arxiv/main.pdf` | Compiled paper (9 pages) |
-| `arxiv/figure1.png` | Publication figure |
+| `variance_detection_proof.py` | the simulations and figures (circular as described above) |
+| `real_data_connector.py` | adapter for real scRNA-seq data |
+| `arxiv/main.tex`, `arxiv/main.pdf`, `arxiv/figure1.png` | paper source, compiled PDF, figure |
+| `USER_MANUAL.md` | install, run, outputs |
+| `CITATION.cff` | how to cite this repository |
 
-## License
+## Not medical advice
 
-CC BY 4.0
+Nothing here diagnoses or treats anything. Checkpoint-inhibitor immunotherapy (for example pembrolizumab, nivolumab)
+is a real, approved class of treatment; whether it suits anyone is a question for their oncologist.
 
-## Citation
+## Licence
+
+Code: Apache License 2.0 (`LICENSE`). Papers and figures: Creative Commons Attribution 4.0.
+
+## Cite
 
 ```bibtex
-@article{merchant2026variance,
-  title={Variance as a Universal Defection Signal},
-  author={Merchant, Sohail Mohammed Siddique Batliwalla},
-  year={2026},
-  note={DOT Protocol. Council of Minds, 548 rounds. Nashik, India.}
+@misc{batliwallamerchant2026variance,
+  title     = {Variance as a Universal Defection Signal: A Framework for Early Detection of Cooperative Failure in Biological Systems},
+  author    = {Batliwalla Merchant, Sohail Mohammad Siddique},
+  year      = {2026},
+  publisher = {Zenodo},
+  version   = {v2},
+  doi       = {10.5281/zenodo.23731290},
+  note      = {Version 2 states that the version 1 simulation results are circular}
 }
 ```
 
 For Mumtaz. For Carl. For the researcher at 3 AM.
-
-*Light is all you need.*
